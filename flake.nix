@@ -97,7 +97,7 @@
         Type: mkAutoInstaller :: nixosConfiguration -> derivation
 
         Example:
-          mkZfsInstaller self.nixosConfigurations.myMachine
+          mkAutoInstaller self.nixosConfigurations.myMachine
           => derivation
     */
 
