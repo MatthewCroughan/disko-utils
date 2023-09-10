@@ -111,7 +111,7 @@
         modules = [
           "${pkgs.path}/nixos/modules/installer/cd-dvd/installation-cd-base.nix"
           {
-            isoImage.graphicalGrub = false;
+            isoImage.forceTextMode = true;
             isoImage.squashfsCompression = "zstd -Xcompression-level 1";
             services.getty.autologinUser = pkgs.lib.mkForce "root";
             environment.systemPackages = [
