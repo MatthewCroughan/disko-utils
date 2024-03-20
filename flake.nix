@@ -1,7 +1,6 @@
 {
   inputs.disko.url = "github:nix-community/disko";
   outputs = { disko, ... }: {
-
     /*  Creates a shell script that will:
 
         1. Make and partition ZFS on a given block device
@@ -101,7 +100,7 @@
           => derivation
     */
 
-    mkAutoInstaller = nixosConfiguration:
+    mkAutoInstaller = { nixosConfiguration, flakeToInstall ? null }:
       let
         pkgs = nixosConfiguration.pkgs;
         nixosSystem = import "${pkgs.path}/nixos/lib/eval-config.nix";
@@ -118,6 +117,7 @@
               (pkgs.writeShellScriptBin "diskoScript" ''
                 ${nixosConfiguration.config.system.build.diskoScript}
                 nixos-install --no-root-password --option substituters "" --no-channel-copy --system ${nixosConfiguration.config.system.build.toplevel}
+                ${if (flakeToInstall != null) then "cp --no-preserve=mode -rT ${flakeToInstall} /mnt/etc/nixos" else ""}
                 reboot
               '')
             ];
