@@ -100,16 +100,17 @@
           => derivation
     */
 
-    mkAutoInstaller = { nixosConfiguration, flakeToInstall ? null }:
+    mkAutoInstaller = { nixosConfiguration, flakeToInstall ? null, extraModules ? [] }:
       let
         pkgs = nixosConfiguration.pkgs;
         nixosSystem = import "${pkgs.path}/nixos/lib/eval-config.nix";
       in
       (nixosSystem {
         system = pkgs.system;
-        modules = [
+        modules = extraModules ++ [
           "${pkgs.path}/nixos/modules/installer/cd-dvd/installation-cd-base.nix"
           {
+            boot.kernelPackages = pkgs.linuxPackages_latest;
             isoImage.forceTextMode = true;
             isoImage.squashfsCompression = "zstd -Xcompression-level 1";
             services.getty.autologinUser = pkgs.lib.mkForce "root";
