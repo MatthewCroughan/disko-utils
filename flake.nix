@@ -110,6 +110,7 @@
         modules = extraModules ++ [
           "${pkgs.path}/nixos/modules/installer/cd-dvd/installation-cd-base.nix"
           {
+            boot.supportedFilesystems.zfs = pkgs.lib.mkForce false;
             boot.kernelPackages = pkgs.linuxPackages_latest;
             isoImage.forceTextMode = true;
             isoImage.squashfsCompression = "zstd -Xcompression-level 1";
